@@ -54,8 +54,15 @@ const Hero = () => {
                         {/* 💬 CHAT AREA */}
                         <div className="flex-1  p-6 overflow-y-auto space-y-6 bg-zinc-950/30">
                             <div className="flex w-full flex-col items-start">
-                                <div className=' w-8 h-8 rounded-full flex items-center justify-center overflow-hidden'>
-                                    <Image src="https://images.unsplash.com/photo-1654110455429-cf322b40a906?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZSUyMHBpY3R1cmV8ZW58MHx8MHx8fDA%3D" alt="profile" width={20} height={20} className="w-full h-full object-cover" />
+                                <div className="flex max-w-[85%] gap-3 flex-row">
+                                    <div className=' w-8 h-8 rounded-full flex items-center justify-center overflow-hidden'>
+                                        <Image src="https://images.unsplash.com/photo-1654110455429-cf322b40a906?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZSUyMHBpY3R1cmV8ZW58MHx8MHx8fDA%3D" alt="profile" width={20} height={20} className="w-full h-full object-cover" />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <div className="p-4 roudned-2xl text-sm leading-relaxed shadow-sm bg-white text-zinc-900 rounded-tl-sm">
+                                            Lorem ipsum dolor sit amet.
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
