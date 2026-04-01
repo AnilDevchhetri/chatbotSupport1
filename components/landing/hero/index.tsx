@@ -1,6 +1,9 @@
-import { Button } from '@/components/ui/button'
+
 import { ArrowRight } from 'lucide-react'
+import { Button } from "@/components/ui/button"
+import { Menu } from "lucide-react"
 import React from 'react'
+import Image from 'next/image'
 
 const Hero = () => {
     return (
@@ -22,8 +25,44 @@ const Hero = () => {
                 </div>
             </div>
             {/* floating chat interface visualizaiotn */}
-            <div className='max-w-3xl mx-auto relative z-10'>
 
+
+            <div className="max-w-3xl mx-auto relative z-10">
+
+                {/* Background Glow */}
+                <div className="absolute inset-0 bg-indigo-500/10 blur-[100px] rounded-full pointer-events-none" />
+
+                {/* Actual Card */}
+                <div className="rounded-2xl p-1 md:p-2 relative overflow-hidden ring-1 ring-white/10 bg-[#0a0a0e] shadow-2xl">
+
+                    <div className="flex flex-col h-[500px] md:h-[600px] w-full bg-[#0a0a0e] rounded-xl overflow-hidden">
+
+                        {/* 🔝 TOP BAR */}
+                        <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-white/5 backdrop-blur-md">
+
+                            {/* LEFT - Company */}
+                            <div className="flex items-center gap-2">
+                                <div className="w-7 h-7 rounded-md bg-indigo-500 flex items-center justify-center text-white text-sm font-bold">
+                                    T
+                                </div>
+                                <span className="text-white font-medium">TasukeAi</span>
+                            </div>
+
+
+                        </div>
+
+                        {/* 💬 CHAT AREA */}
+                        <div className="flex-1  p-6 overflow-y-auto space-y-6 bg-zinc-950/30">
+                            <div className="flex w-full flex-col items-start">
+                                <div className=' w-8 h-8 rounded-full flex items-center justify-center overflow-hidden'>
+                                    <Image src="https://images.unsplash.com/photo-1654110455429-cf322b40a906?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZSUyMHBpY3R1cmV8ZW58MHx8MHx8fDA%3D" alt="profile" width={20} height={20} className="w-full h-full object-cover" />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
             </div>
         </section>
     )
