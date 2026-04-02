@@ -1,5 +1,5 @@
 
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Send, User } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Menu } from "lucide-react"
 import React from 'react'
@@ -53,17 +53,74 @@ const Hero = () => {
 
                         {/* 💬 CHAT AREA */}
                         <div className="flex-1  p-6 overflow-y-auto space-y-6 bg-zinc-950/30">
-                            <div className="flex w-full flex-col items-start">
+                            <div className="flex w-full flex-col items-start gap-5">
                                 <div className="flex max-w-[85%] gap-3 flex-row">
                                     <div className=' w-8 h-8 rounded-full flex items-center justify-center overflow-hidden'>
                                         <Image src="https://images.unsplash.com/photo-1654110455429-cf322b40a906?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZSUyMHBpY3R1cmV8ZW58MHx8MHx8fDA%3D" alt="profile" width={20} height={20} className="w-full h-full object-cover" />
                                     </div>
                                     <div className="space-y-2">
                                         <div className="p-4 roudned-2xl text-sm leading-relaxed shadow-sm bg-white text-zinc-900 rounded-tl-sm">
-                                            Lorem ipsum dolor sit amet.
+                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad, quo?
+                                        </div>
+                                        <div className='flex flex-wrap gap-2 pt-1 ml-1'>
+                                            <span className='px-3 py-1.5 rounded-full border  border-zinc-700 bg-zinc-800/50 text-zinc-300 text-xs font-medium cursor-default'>FAQ</span>
+                                            <span className='px-3 py-1.5 rounded-full border  border-zinc-700 bg-zinc-800/50 text-zinc-300 text-xs font-medium cursor-default'>Pricing</span>
+                                            <span className='px-3 py-1.5 rounded-full border  border-zinc-700 bg-zinc-800/50 text-zinc-300 text-xs font-medium cursor-default'>Support</span>
                                         </div>
                                     </div>
                                 </div>
+
+                                <div className='flex w-full flex-col items-end'>
+                                    <div className='flex max-w-[85%] gap-3 flex-row-reverse'>
+                                        <div className='w-8 h-8 rounded-full flex items-center justify-center shrink-0 border border-whites/5 bg-zinc-800'>
+                                            <User className='w-4 h-4 text-zinc-400' />
+                                        </div>
+                                        <div className='p-4 rounded-2xl text-sm leading-relaxed shadow-sm bg-zinc-800 text-zinc-200 rounded-tr-sm'>
+                                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Modi, maxime?
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div className="flex max-w-[85%] gap-3 flex-row">
+                                    <div className=' w-8 h-8 rounded-full flex items-center justify-center overflow-hidden'>
+                                        <Image src="https://images.unsplash.com/photo-1654110455429-cf322b40a906?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZSUyMHBpY3R1cmV8ZW58MHx8MHx8fDA%3D" alt="profile" width={20} height={20} className="w-full h-full object-cover" />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <div className="p-4 roudned-2xl text-sm leading-relaxed shadow-sm bg-white text-zinc-900 rounded-tl-sm">
+                                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Cupiditate dolorum eum voluptatum fuga voluptatem, beatae ullam, tenetur cumque quas sint dolore sunt.
+                                        </div>
+
+                                    </div>
+
+
+
+
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+
+                        <div className="p-4 bg-[#0A0A0e] border-t border-white/5 shrink-0">
+                            <div className="relative">
+
+                                <div className="flex items-center gap-3 w-full px-4 py-3 text-sm bg-zinc-900 rounded-xl border border-white/10">
+
+                                    {/* Placeholder text */}
+                                    <span className="text-zinc-400 flex-1">
+                                        Type a message
+                                    </span>
+
+                                    {/* Send button */}
+                                    <button className="h-8 w-8 rounded-lg bg-zinc-800 flex items-center justify-center hover:bg-zinc-700 transition">
+                                        <Send className="w-4 h-4 text-white" />
+                                    </button>
+
+                                </div>
+
                             </div>
                         </div>
 
