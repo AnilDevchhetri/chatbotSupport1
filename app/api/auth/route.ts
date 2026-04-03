@@ -17,5 +17,11 @@ export async function GET() {
     };
     const authorizationUrl = scalekit.getAuthorizationUrl(redirectUri, options);
     return NextResponse.redirect(authorizationUrl);
-  } catch (error) {}
+  } catch (error) {
+    console.log("authentication error", error);
+    return NextResponse.json(
+      { error: "Failed to generate authorization URl" },
+      { status: 500 },
+    );
+  }
 }
