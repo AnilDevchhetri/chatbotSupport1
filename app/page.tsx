@@ -26,4 +26,4 @@ const Page = () => {
 
 export default Page
 
-//1:06
+//1:17
