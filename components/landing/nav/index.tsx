@@ -1,7 +1,11 @@
+
+import { isAuthorized } from '@/lib/isAuthorized'
 import Link from 'next/link'
 import React from 'react'
 
-const NavBar = () => {
+const NavBar = async () => {
+    const user = await isAuthorized();
+    console.log(user);
     return (
         <nav className='fixed top-0 inset-x-0 z-50 transition-all duration-300 backdrop-blur-sm border-b border-white/5 bg-[#050509]/50'>
             <div className='max-w-6xl mx-auto px-6 h-16 flex items-center justify-between'>
@@ -17,8 +21,23 @@ const NavBar = () => {
                     <Link href={'/'} className='hover:text-white transition-colors'>Pricing</Link>
                 </div>
                 <div className='flex items-center gap-4'>
-                    <Link href={'/api/auth'} className='text-sm font-medium text-zinc-400 hover:text-white'>Sign In</Link>
-                    <Link href={'/api/auth'} className='text-xs font-medium bg-white text-black px-4 py-3 rounded-full hover:bg-zinc-200 transition-colors '>Get Started</Link>
+                    {
+                        user ? (
+
+                            <div className='flex items-center gap-3'>
+
+                                <Link href={'/dashboard'} className='text-xs font-medium bg-white text-black px-4 py-3 rounded-full hover:bg-zinc-200 transition-colors '>Dashboard</Link>
+                            </div>
+                        ) : (
+
+                            <>
+                                <Link href={'/api/auth'} className='text-sm font-medium text-zinc-400 hover:text-white'>Sign In</Link>
+                                <Link href={'/api/auth'} className='text-xs font-medium bg-white text-black px-4 py-3 rounded-full hover:bg-zinc-200 transition-colors '>Get Started</Link>
+                            </>
+                        )
+
+                    }
+
                 </div>
             </div>
         </nav>
