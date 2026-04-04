@@ -1,10 +1,12 @@
+import Initialform from '@/components/dashboard/initialform'
 import React from 'react'
 
 const Page = () => {
     return (
-        <div>
+        <div className='flex-1 flex w-full'>
 
-            Page
+            <Initialform />
+
 
         </div>
     )
