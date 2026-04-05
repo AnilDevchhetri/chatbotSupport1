@@ -1,9 +1,10 @@
 'use client'
+import { useUser } from '@/hooks/useUser'
 import { cn } from '@/lib/utils'
 import { BookOpen, Bot, Layers, LayoutDashboard, MessageSquare, Settings } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 
 const SIDEBAR_ITEMS = [
@@ -18,8 +19,20 @@ const SIDEBAR_ITEMS = [
 
 const Sidebar = () => {
     const pathName = usePathname();
+    const { email } = useUser();
+    const [metadata, setMetaData] = useState<any>();
+    const [isLoading, setIsLoading] = useState(true);
+    useEffect(() => {
+        const fetchMetaData = async () => {
+            const response = await fetch("/api/metadata/fetch");
+            const res = await response.json();
+            setMetaData(res.data);
+            setIsLoading(false);
+        }
+        fetchMetaData();
+    }, [])
     return (
-        <div className='w-64 border-r border-white/5 bg-[#050509] flex flex-col h-screen fixed left-0 top-0 z-40 hidden md:flex'>
+        <aside className='w-64 border-r border-white/5 bg-[#050509] flex flex-col h-screen fixed left-0 top-0 z-40 hidden md:flex'>
             <div className='h-16 flex items-center px-6 border-b border-white/5'>
                 <div className='flex items-center gap-2'>
                     {/* logo mark */}
@@ -49,9 +62,29 @@ const Sidebar = () => {
                     })
                 }
             </nav>
+            {/* {profiel botton ara} */}
+            <div className='p-4 border-t border-white/5'>
+                <div className='flex items-center gap-3 px-3 py-2 rounded-md hover:bg-white/5 cursor-pointer transition-colors group'>
+                    <div className='w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center border border-white/10'>
+                        <span className='text-xs text-zinc-400 group-hover:text-white'>
+                            {metadata?.business_name?.slice(0, 2).toUpperCase() || ".."}
+                        </span>
+                    </div>
+                    <div className='flex flex-col overflow-hidden'>
+                        <span className='text-sm font-medium text-zinc-300 truncate'>
+                            {
+                                isLoading
+                                    ? "Loading..."
+                                    : `${metadata?.business_name}'s Workspace`
+                            }
+                        </span>
+                        <span className='text-xs text-zinc-500 truncate'>{email}</span>
+                    </div>
 
+                </div>
+            </div>
 
-        </div>
+        </aside>
     )
 }
 

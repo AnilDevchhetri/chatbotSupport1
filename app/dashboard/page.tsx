@@ -33,7 +33,7 @@ const Page = () => {
                     </div>
                 ) : (
                     <>
-
+                        <h1>this is dashboard main</h1>
                     </>
                 )
             }
