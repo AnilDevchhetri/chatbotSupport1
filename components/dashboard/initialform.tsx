@@ -1,11 +1,12 @@
 'use client'
 
 import { cn } from '@/lib/utils';
-import { Building2, ChevronLeft, Globe, LinkIcon, Sparkles } from 'lucide-react';
+import { ArrowRight, Building2, ChevronLeft, Globe, LinkIcon, Sparkles } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react'
 import { Button } from '../ui/button';
 import { Textarea } from '../ui/textarea';
 import { Input } from '../ui/input';
+import { Command } from '../ui/command';
 
 interface InitialData {
     businessName: string;
@@ -191,6 +192,7 @@ const Initialform = () => {
                             <div className='relative group'>
                                 {stepData.type === 'textarea' ? (
                                     <Textarea ref={inputRef as any}
+
                                         value={formData[stepData.field] as string}
                                         onChange={(e) => {
                                             setFormData({
@@ -198,9 +200,68 @@ const Initialform = () => {
                                                 [stepData.field]: e.target.value
                                             })
                                         }}
+                                        onKeyDown={hanldeKeyDown}
+                                        placeholder={stepData.placeholder}
+                                        className='w-full bg-zinc-900/40 backdrop-blur-sm border border-white/10 rounded-2xl text-lg md:text-xl px-5 py-4 pr-12 text-white placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50 focus-visible:border-indigo-500 resize-none min-h-[30] transition-all duration-300 hover:border-white/20 shadow-sm'
+                                        autoFocus
                                     />
-                                ) : (<Input />)
-                                }
+                                ) : (<Input
+                                    ref={inputRef as any}
+                                    value={formData[stepData.field] as string}
+                                    type={stepData.type}
+                                    onChange={(e) => {
+                                        setFormData({
+                                            ...formData,
+                                            [stepData.field]: e.target.value
+                                        })
+                                    }}
+                                    onKeyDown={hanldeKeyDown}
+                                    placeholder={stepData.placeholder}
+                                    className='w-full bg-transparent border-0 border-b border-white/10 text-xl md:text-2xl py-4 pr-12 text-white placeholder:text-zinc-700 focus-visible:ring-0 focus-visible:border-indigo-500 rounded-none h-auto shadow-one transition-colors'
+                                    autoFocus
+
+                                />)}
+
+                                <div className='absolute right-0 top-1/2 -translate-y-1/2 text-zinc-600 ponter-events-none'>
+                                    <Icon className='w-5 h-6' />
+                                </div>
+                            </div>
+
+                            <div className='flex items-center justify-between pt-8'>
+                                <div className='hidden sm:flex items-center gap-2 text-xs text-zinc-700'>
+                                    {
+                                        stepData.type === "textarea" ? (
+                                            <>
+                                                <Command className='w-3 h-3' />
+                                                <span>+ Enter</span>
+                                            </>
+                                        ) : (
+                                            <span>Press Enter</span>
+                                        )
+                                    }
+                                    <span className='ml-1'> To contiue</span>
+                                </div>
+
+                                <Button
+                                    onClick={handleNext}
+                                    disabled={!isStepValid}
+                                    className={cn(
+                                        "rounded-full px-8 py-6 text-base font-medium transition-all duration-300",
+                                        !isStepValid
+                                            ? "bg-zinc-800 text-zinc-500 hover:bg-zinc-800 cursor-not-allow"
+                                            : "bg-white text-black hover:bg-zinc-200 hover:shadow-lg hover:shadow-white/10 cursor-pointer"
+                                    )}
+                                >
+                                    {currentStep === STEPS.length - 1 ? "Submit" : "Continue"}
+                                    {
+                                        currentStep === STEPS.length - 1 ? (
+                                            <Sparkles className='w-4 h-4 ml-2' />
+                                        ) : (
+                                            <ArrowRight className='w-4 h-4 ml-2' />
+                                        )
+                                    }
+                                </Button>
+
                             </div>
 
                         </div>
