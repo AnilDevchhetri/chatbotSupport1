@@ -1,0 +1,1 @@
+ALTER TABLE "metadata" RENAME COLUMN "webiste_url" TO "website_url";

@@ -10,8 +10,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { business_name, webiste_url, external_links } = await req.json();
-  if (!business_name || !webiste_url) {
+  const { business_name, website_url, external_links } = await req.json();
+  if (!business_name || !website_url) {
     return NextResponse.json(
       { error: "Missiong business name or webiste Url" },
       { status: 400 },
@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
   const metaDataResponse = await db.insert(metadata).values({
     user_email: user.email,
     business_name,
-    webiste_url,
+    website_url,
     external_links,
   });
 

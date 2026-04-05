@@ -120,6 +120,22 @@ const Initialform = () => {
 
     const handleSubmit = async () => {
         setIsSubmitting(true);
+
+        const response = await fetch("/api/metadata/store", {
+            method: "POST",
+            headers: {
+                "content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                business_name: formData.businessName,
+                website_url: formData.websiteUrl,
+                external_links: formData.externalLinks
+            })
+        });
+        await response.json();
+        setIsSubmitting(false);
+        console.log("response is ", response);
+        window.location.reload();
     }
     const isStepValid = currentStep >= 2 || (formData[stepData.field] && formData[stepData.field].trim() !== '');
 
