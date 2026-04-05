@@ -1,8 +1,19 @@
+'use client'
+import QuickActions from '@/components/dashboard/knowledge/quickActions'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
-import React from 'react'
+import React, { useState } from 'react'
 
 const Knowledge = () => {
+
+    const [defaultTab, setDefaultTab] = useState("website");
+    const [isAddOpen, setIsAddOpen] = useState(false);
+
+    const openModel = (tab: string) => {
+        setDefaultTab(tab);
+        setIsAddOpen(true);
+    }
+
     return (
         <div className='p-6 md:p-8 space-y-8 max-w-7xl mx-auto animate-in fade-in duration'>
             <div className='flex flex-col md:flex-row justify-between items-start md:items-center gap-4'>
@@ -15,12 +26,17 @@ const Knowledge = () => {
                     </p>
                 </div>
                 <div className='flex items-center gap-2'>
-                    <Button onClick={() => Open} className='bg-white text-black hover:bg-zinc-200'>
+                    <Button onClick={() => openModel("website")} className='bg-white text-black hover:bg-zinc-200'>
                         <Plus className='w-4 h-4 mr-2' />
                         Add Knowledge
                     </Button>
                 </div>
             </div>
+
+
+            {/* Quick ACtion  */}
+            <QuickActions onOpenModal={openModel} />
+
         </div>
     )
 }
