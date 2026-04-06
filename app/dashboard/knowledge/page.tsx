@@ -1,4 +1,5 @@
 'use client'
+import AddKnoledgeModal from '@/components/dashboard/knowledge/addKnoledgeModal'
 import QuickActions from '@/components/dashboard/knowledge/quickActions'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
@@ -8,10 +9,17 @@ const Knowledge = () => {
 
     const [defaultTab, setDefaultTab] = useState("website");
     const [isAddOpen, setIsAddOpen] = useState(false);
+    const [KnowledgeStoringLoader, setKnowledgeStoringLoader] = useState(false);
+    const [knowledgSourcesLoader, setKnowledgeSourcesLoader] = useState(true);
+    const [knowledgeSources, setKnowledgeSources] = useState<KnowledgeSource[]>([]);
 
     const openModel = (tab: string) => {
         setDefaultTab(tab);
         setIsAddOpen(true);
+    }
+
+    const handleImportSource = async (data: any) => {
+
     }
 
     return (
@@ -36,6 +44,17 @@ const Knowledge = () => {
 
             {/* Quick ACtion  */}
             <QuickActions onOpenModal={openModel} />
+
+            {/* Add model comoetn */}
+            <AddKnoledgeModal
+                isOpen={isAddOpen}
+                setIsOpen={setIsAddOpen}
+                defaultTab={defaultTab}
+                setDefaultTab={setDefaultTab}
+                onImport={handleImportSource}
+                isLoading={KnowledgeStoringLoader}
+                existingSources={knowledgeSources}
+            />
 
         </div>
     )
