@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
   const { business_name, website_url, external_links } = await req.json();
   if (!business_name || !website_url) {
     return NextResponse.json(
-      { error: "Missiong business name or webiste Url" },
+      { error: "Missiong business name or website Url" },
       { status: 400 },
     );
   }

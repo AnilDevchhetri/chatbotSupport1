@@ -19,6 +19,25 @@ const Knowledge = () => {
     }
 
     const handleImportSource = async (data: any) => {
+        setKnowledgeSourcesLoader(true);
+        try {
+            let response;
+            if (data.type === "upload" && data.file) {
+                const formData = new FormData();
+                formData.append("type", "upload");
+                formData.append("file", data.file);
+
+            } else {
+                response = await fetch("/api/knowledge/store", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data)
+                });
+            }
+
+        } catch (error) {
+
+        }
 
     }
 
