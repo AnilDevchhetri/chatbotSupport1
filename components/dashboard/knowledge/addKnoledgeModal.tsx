@@ -45,6 +45,7 @@ const AddKnoledgeModal = ({ isOpen, setIsOpen, defaultTab, setDefaultTab, onImpo
         const data: any = { type: defaultTab }
         console.log(defaultTab);
         if (defaultTab === "website") {
+
             if (!websiteUrl) {
                 setError("Please Enter a website url");
                 return;

@@ -19,13 +19,18 @@ const Knowledge = () => {
     }
 
     const handleImportSource = async (data: any) => {
-        setKnowledgeSourcesLoader(true);
+        setKnowledgeStoringLoader(true);
+        console.log("data.type is ", data.type)
         try {
             let response;
             if (data.type === "upload" && data.file) {
                 const formData = new FormData();
                 formData.append("type", "upload");
                 formData.append("file", data.file);
+                response = await fetch("/api/knowledge/store", {
+                    method: "POST",
+                    body: formData,
+                })
 
             } else {
                 response = await fetch("/api/knowledge/store", {
@@ -35,8 +40,16 @@ const Knowledge = () => {
                 });
             }
 
-        } catch (error) {
+            if (!response.ok) throw new Error("Failded to store source")
 
+            const res = await fetch("/api/knowledge/fetch");
+            const newData = await res.json();
+            setKnowledgeSources(newData.source)
+
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setKnowledgeStoringLoader(false)
         }
 
     }
