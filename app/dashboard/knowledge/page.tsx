@@ -2,9 +2,11 @@
 import AddKnoledgeModal from '@/components/dashboard/knowledge/addKnoledgeModal'
 import KnowledgeTable from '@/components/dashboard/knowledge/knowledgeTable'
 import QuickActions from '@/components/dashboard/knowledge/quickActions'
+import SourceDetailSheet from '@/components/dashboard/knowledge/sourceDetailSheet'
 import { Button } from '@/components/ui/button'
+import { KnownKeysOnly } from 'drizzle-orm'
 import { Plus } from 'lucide-react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 const Knowledge = () => {
 
@@ -14,10 +16,25 @@ const Knowledge = () => {
     const [knowledgSourcesLoader, setKnowledgeSourcesLoader] = useState(true);
     const [knowledgeSources, setKnowledgeSources] = useState<KnowledgeSource[]>([]);
 
+    const [selectedSource, setSelectedSource] = useState<KnowledgeSource | null>(null);
+    const [isSheetOpen, setIsSheetOpen] = useState(false);
+
     const openModel = (tab: string) => {
         setDefaultTab(tab);
         setIsAddOpen(true);
     }
+
+    useEffect(() => {
+
+        const fetchKnowledgeSource = async () => {
+            setKnowledgeSourcesLoader(true)
+            const res = await fetch("/api/knowledge/fetch");
+            const data = await res.json();
+            setKnowledgeSources(data.source);
+            setKnowledgeSourcesLoader(false)
+        }
+        fetchKnowledgeSource();
+    }, [])
 
     const handleImportSource = async (data: any) => {
         setKnowledgeStoringLoader(true);
@@ -56,7 +73,7 @@ const Knowledge = () => {
     }
 
     const hanldeSourceClick = (source: KnowledgeSource) => {
-        setSelectedSource(false);
+        setSelectedSource(source);
         setIsSheetOpen(true);
 
     }
@@ -99,6 +116,14 @@ const Knowledge = () => {
                 onImport={handleImportSource}
                 isLoading={KnowledgeStoringLoader}
                 existingSources={knowledgeSources}
+            />
+
+
+            <SourceDetailSheet
+                isOpen={isSheetOpen}
+                setIsOpen={setIsSheetOpen}
+                selectedSource={selectedSource}
+
             />
 
         </div>
