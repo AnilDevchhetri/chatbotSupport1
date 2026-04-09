@@ -1,3 +1,5 @@
+import { db } from "@/db/client";
+import { knowledge_source } from "@/db/schema";
 import { isAuthorized } from "@/lib/isAuthorized";
 import { summarizeMarkdown } from "@/lib/onepAi";
 import { error } from "console";
@@ -32,6 +34,23 @@ export async function POST(req: NextRequest) {
         let formattedContent: any = "";
         const markDown = await summarizeMarkdown(fileContent);
         formattedContent = markDown;
+        await db.insert(knowledge_source).values({
+          user_email: user.email,
+          type: "upload",
+          name: file.name,
+          status: "active",
+          content: formattedContent,
+          meta_data: JSON.stringify({
+            fileName: file.name,
+            fileSize: file.size,
+            rowCount: (lines.length = 1),
+            headers: headers,
+          }),
+        });
+        return NextResponse.json(
+          { message: "CSV file uploaded successfully" },
+          { status: 200 },
+        );
       }
     } else {
       body = await req.json();
@@ -61,7 +80,29 @@ export async function POST(req: NextRequest) {
       }
       console.log("html fro mzenrow", html);
       const markdown = await summarizeMarkdown(html);
-      console.log(markdown);
+      await db.insert(knowledge_source).values({
+        user_email: user.email,
+        type: "website",
+        name: body.url,
+        status: "active",
+        source_url: body.url,
+        content: markdown,
+      });
+      console.log("clean markdown is anil", markdown);
+    } else if (type === "text") {
+      let content = body.content;
+      if (body.content.lenght > 500) {
+        const markdown = await summarizeMarkdown(body.content);
+        content = markdown;
+      }
+
+      await db.insert(knowledge_source).values({
+        user_email: user.email,
+        type: "text",
+        name: body.title,
+        status: "active",
+        content: content,
+      });
     }
 
     return NextResponse.json(

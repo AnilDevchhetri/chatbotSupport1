@@ -13,14 +13,18 @@ const customFetch = (url: RequestInfo | URL, init?: RequestInit) => {
   });
 };
 
-const openai = new OpenAi({ apiKey: process.env.OPENAI_BASE_URL });
+const openai = new OpenAi({
+  apiKey: process.env.OPENAI_API_KEY,
+  fetch: customFetch,
+  baseURL: process.env.OPENAI_BASE_URL,
+});
 
 export async function summarizeMarkdown(markDown: string) {
   try {
     const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: "gpt-4.1-nano",
       temperature: 1.0,
-      max_tokens: 900,
+      max_tokens: 700,
       messages: [
         {
           role: "system",
@@ -42,8 +46,9 @@ export async function summarizeMarkdown(markDown: string) {
                 Style:
                 - Write in simple, clear sentences
                 - Make it readable for an AI knowledge base
-                - Focus on meaning, not wording
-
+                - Focus on meaning, not wording,
+                - The Final output must be under 2000 words
+                Important: if content is english use english, if in japnese use japanese. and if in any other language, then the sumarize content must be according to that language.
                 Goal:
                 Produce a short, clean, non-repetitive summary that captures the core information only.
                 `,
@@ -54,5 +59,11 @@ export async function summarizeMarkdown(markDown: string) {
         },
       ],
     });
-  } catch (error) {}
+
+    console.log("completiong is ", completion.usage);
+    return completion.choices[0].message.content?.trim() ?? "";
+  } catch (error) {
+    console.error("Error in summarizeMarkdown", error);
+    throw error;
+  }
 }

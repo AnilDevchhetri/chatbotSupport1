@@ -1,5 +1,6 @@
 'use client'
 import AddKnoledgeModal from '@/components/dashboard/knowledge/addKnoledgeModal'
+import KnowledgeTable from '@/components/dashboard/knowledge/knowledgeTable'
 import QuickActions from '@/components/dashboard/knowledge/quickActions'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
@@ -54,6 +55,12 @@ const Knowledge = () => {
 
     }
 
+    const hanldeSourceClick = (source: KnowledgeSource) => {
+        setSelectedSource(false);
+        setIsSheetOpen(true);
+
+    }
+
     return (
         <div className='p-6 md:p-8 space-y-8 max-w-7xl mx-auto animate-in fade-in duration'>
             <div className='flex flex-col md:flex-row justify-between items-start md:items-center gap-4'>
@@ -76,6 +83,12 @@ const Knowledge = () => {
 
             {/* Quick ACtion  */}
             <QuickActions onOpenModal={openModel} />
+
+            <KnowledgeTable
+                sources={knowledgeSources}
+                onSourceClick={hanldeSourceClick}
+                isLoading={knowledgSourcesLoader}
+            />
 
             {/* Add model comoetn */}
             <AddKnoledgeModal

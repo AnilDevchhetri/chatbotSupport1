@@ -79,7 +79,7 @@ const AddKnoledgeModal = ({ isOpen, setIsOpen, defaultTab, setDefaultTab, onImpo
             }
             data.title = docsTitle;
             data.content = docsContent;
-        } else if (defaultTab === "Upload") {
+        } else if (defaultTab === "upload") {
             if (!uploadedFile) {
                 setError("Please select a file to upload");
                 return;
