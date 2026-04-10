@@ -1,3 +1,8 @@
+type SourceType = "webiste" | "docs" | "upload" | "text";
+type SourceStatus = "active" | "training" | "error" | "excluded";
+type SectionStatus = "active" | "draft" | "disabled";
+type Tone = "strict" | "neutral" | "friendly" | "empathetic";
+
 interface KnowledgeSource {
   id: string;
   user_email: string;
@@ -9,4 +14,13 @@ interface KnowledgeSource {
   meta_data: string | null;
   last_updated: string | null;
   created_at: string | null;
+}
+
+interface SectionFormData {
+  name: string;
+  description: string;
+  tone: Tone;
+  allowedTopics: string;
+  blockedTopics: string;
+  fallbackBehavior: string;
 }

@@ -27,7 +27,7 @@ export const getTypeIcon = (type: SourceType) => {
 export const getStatusBadge = (status: SourceStatus) => {
     switch (status) {
         case "active": return <Badge variant="default" className='bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20 border-emerald-500/20 shadow-none' >Active</Badge>;
-        case "traning": return <Badge variant="default" className='bg-amber-500/10 text-amber-500 hover:bg-amber-500/20 border-amber-500/20 shadow-none' >Training</Badge>;
+        case "training": return <Badge variant="default" className='bg-amber-500/10 text-amber-500 hover:bg-amber-500/20 border-amber-500/20 shadow-none' >Training</Badge>;
         case "error": return <Badge variant="default" className='bg-red-500/10 text-red-500 hover:bg-red-500/20 border-red-500/20 shadow-none' >Error</Badge>;
         case "excluded": return <Badge variant="default" className='bg-zinc-500/10 text-zinc-500 hover:bg-zinc-500/20 border-zinc-500/20 shadow-none' >Excluded</Badge>;
         default: return <Badge variant={"outline"}>Unknown</Badge>
