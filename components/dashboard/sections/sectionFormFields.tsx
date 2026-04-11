@@ -1,6 +1,8 @@
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import React from 'react'
 
@@ -8,6 +10,7 @@ interface KnowledgeSource {
     id: string;
     name: string;
     type: string;
+    status: string;
 }
 
 type SectionFormFieldsProps = {
@@ -19,6 +22,31 @@ type SectionFormFieldsProps = {
     isLoadingSources: boolean;
     isDisabled: boolean;
 }
+
+const TONE_OPTIONS = [
+    {
+        value: "strict",
+        label: "Strict",
+        badge: "Fact-based",
+        description: "Only answer if Fully confident. No Small Talk."
+    },
+    {
+        value: "neutral",
+        label: "Neutral",
+        description: "Profesioanl, concise and direct."
+    },
+    {
+        value: "friendly",
+        label: "Friendly",
+        description: "Warm and conversational. Good for general Faq."
+    },
+    {
+        value: "empathetic",
+        label: "Empathetic",
+        description: "Support- first, apologetic and calming."
+    },
+
+]
 
 const SectionFormFields = ({ formData, setFormData, selectedSources, setSelectedSources, knowledgeSources, isLoadingSources, isDisabled }: SectionFormFieldsProps) => {
     return (
@@ -74,7 +102,141 @@ const SectionFormFields = ({ formData, setFormData, selectedSources, setSelected
                             />
 
                         </SelectTrigger>
+                        <SelectContent className='bg-[#0A0A0e] border-white/10 text-zinc-300'>
+                            {
+                                knowledgeSources.length > 0 ? (
+                                    knowledgeSources.map((source) => (
+                                        <SelectItem key={source.id} value={source.id}>
+                                            <div className='flex items-center gap-2'>
+                                                <span className='text-xs text-zinc-500 capitalize'>
+                                                    [{source.type}]
+                                                </span>
+                                                <span> {source.name}</span>
+                                            </div>
+                                        </SelectItem>
+                                    ))
+                                ) : (
+                                    <SelectItem value='none' disabled>
+                                        No source found
+                                    </SelectItem>
+                                )
+                            }
+                        </SelectContent>
                     </Select>
+
+                    {
+                        selectedSources?.length > 0 && (
+                            <div className='space-y-2'>
+                                {selectedSources?.map((sourceId) => {
+                                    const source = knowledgeSources?.find((s) => s.id === sourceId);
+                                    if (!source) return null;
+                                    return (
+                                        <div key={sourceId}
+                                            className='flex items-cener justify-between p-2 rounded-md bg-white/5 border border-white/10'
+                                        >
+                                            <div className='flex items-cener gap-2'>
+                                                <span className='text-xs text-zinc-500 capitalize'>
+                                                    [{source.type}]
+                                                </span>
+                                                <span className='text-sm text-zinc-300'>
+                                                    {source.name}
+                                                </span>
+                                                <Button variant={"ghost"}
+                                                    size="sm"
+                                                    className='h-6 w-6 p-0 text-zinc-500 hover:text-red-400'
+                                                    onClick={() =>
+                                                        setSelectedSources(
+                                                            selectedSources.filter((id) => id !== sourceId)
+                                                        )
+                                                    }
+                                                    disabled={isDisabled}
+                                                >
+                                                    x
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        )
+                    }
+
+                </div>
+
+                <div className='space-y-4'>
+                    <h4 className='text-xs font-semibold text-zinc-500 uppercase tracking-normal'>
+                        Tone
+                    </h4>
+                    <RadioGroup
+                        value={formData.tone}
+                        onValueChange={(value) => {
+                            setFormData({ ...formData, tone: value as Tone })
+                        }}
+                        className='grid grid-cols-1 gap-2'
+                        disabled={isDisabled}
+                    >
+                        {
+                            TONE_OPTIONS.map((option) => (
+                                <div key={option.value}
+                                    className='flex items-center space-x-2 rouded-md border border-white/5 bg-white/1 p-3 hover:bg-white/5 transition-colors'
+                                >
+                                    <RadioGroupItem
+                                        value={option.value}
+                                        id={option.value}
+                                        className='border-white/20 text-indigo-500'
+                                    />
+                                    <Label htmlFor={option.value}
+                                        className='flex-1 cursor-pointer'
+                                    >
+                                        <div className='flex items-center gap-2'>
+                                            <span className='text-zinc-200 font-medium'>{option.label}</span>
+                                            {option.badge && (
+                                                <span className='text-[10px] bg-red-500/10 text-red-500'>
+                                                    {option.badge}
+                                                </span>
+                                            )}
+                                        </div>
+                                        <span className='text-xs text-zinc-500 font-normal'>
+                                            {option.description}
+                                        </span>
+                                    </Label>
+                                </div>
+                            ))
+                        }
+                    </RadioGroup>
+                </div>
+                <div className='space-y-4'>
+                    <h4 className='text-xs font-semibold text-zinc-500 uppercase tracking-normal'>
+                        Scope Rules
+                    </h4>
+                    <div className='grid grid-cols-1 gap-4'>
+                        <div className='space-y-2'>
+                            <Label className='text-zinc-300 text-xs'>
+                                Allowed Topics
+                            </Label>
+                            <Input
+                                className='bg-white/2 border-white/10 text-white' placeholder='e.g pricng, refunds'
+                                value={formData.allowedTopics}
+                                onChange={(e) =>
+                                    setFormData({ ...formData, allowedTopics: e.target.value })
+                                }
+                                disabled={isDisabled}
+                            />
+                        </div>
+                        <div className='space-y-2'>
+                            <Label className='text-zinc-300 text-xs'>
+                                Blocked Topics
+                            </Label>
+                            <Input
+                                className='bg-white/2 border-white/10 text-white' placeholder='e.g competitors,bad words '
+                                value={formData.allowedTopics}
+                                onChange={(e) =>
+                                    setFormData({ ...formData, allowedTopics: e.target.value })
+                                }
+                                disabled={isDisabled}
+                            />
+                        </div>
+                    </div>
                 </div>
             </div>
         </>

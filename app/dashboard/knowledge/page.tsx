@@ -30,7 +30,7 @@ const Knowledge = () => {
             setKnowledgeSourcesLoader(true)
             const res = await fetch("/api/knowledge/fetch");
             const data = await res.json();
-            setKnowledgeSources(data.source);
+            setKnowledgeSources(data.sources);
             setKnowledgeSourcesLoader(false)
         }
         fetchKnowledgeSource();

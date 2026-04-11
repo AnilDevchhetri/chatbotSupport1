@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '@/components/ui/sheet'
 import { Plus } from 'lucide-react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 
 
@@ -52,7 +52,20 @@ const Page = () => {
     const [isLoadingSections, setIsLoadingSections] = useState(true);
     const [formData, setFormData] = useState<SectionFormData>(INITIAL_FORM_DATA);
 
-
+    useEffect(() => {
+        const fetchKnowledgeSources = async () => {
+            try {
+                const res = await fetch("/api/knowledge/fetch");
+                const data = await res.json();
+                setKnowledgeSources(data.sources || [])
+            } catch (error) {
+                console.error("Failed to fetch Knowledge sources: ", error)
+            } finally {
+                setIsLoadingSources(false);
+            }
+        }
+        fetchKnowledgeSources();
+    }, [])
     const handleCreateSection = async () => {
         setSelectedSection({
             id: "new",
@@ -63,7 +76,7 @@ const Page = () => {
             scopeLabel: "",
             status: "draft"
         })
-        setSelectedSection([]);
+        setSelectedSources([])
         setFormData(INITIAL_FORM_DATA);
         setIsSheetOpen(true);
 

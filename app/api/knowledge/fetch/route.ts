@@ -9,9 +9,9 @@ export async function GET() {
   if (!user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  const source = await db
+  const sources = await db
     .select()
     .from(knowledge_source)
     .where(eq(knowledge_source.user_email, user.email));
-  return NextResponse.json({ source }, { status: 200 });
+  return NextResponse.json({ sources }, { status: 200 });
 }
