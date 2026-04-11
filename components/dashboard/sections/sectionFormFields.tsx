@@ -229,9 +229,9 @@ const SectionFormFields = ({ formData, setFormData, selectedSources, setSelected
                             </Label>
                             <Input
                                 className='bg-white/2 border-white/10 text-white' placeholder='e.g competitors,bad words '
-                                value={formData.allowedTopics}
+                                value={formData.blockedTopics}
                                 onChange={(e) =>
-                                    setFormData({ ...formData, allowedTopics: e.target.value })
+                                    setFormData({ ...formData, blockedTopics: e.target.value })
                                 }
                                 disabled={isDisabled}
                             />

@@ -48,6 +48,7 @@ export const sections = pgTable("sections", {
   name: text("name").notNull(),
   description: text("description").notNull(),
   source_ids: text("source_ids").array().notNull(),
+
   tone: text("tone").notNull(),
   allowed_topics: text("allowed_topics"),
   blocked_topics: text("blocked_topics"),

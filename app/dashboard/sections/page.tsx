@@ -78,7 +78,25 @@ const Page = () => {
 
 
     const handleDeleteSection = async () => {
-
+        if (!selectedSection || selectedSection.id === "new") return;
+        if (!confirm(`Are you sure you wnat to delete ${selectedSection.name}? This will permanelntly delete this item.`)) {
+            return;
+        }
+        try {
+            setIsSaving(true);
+            const response = await fetch('/api/section/delete', {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id: selectedSection.id })
+            })
+            if (!response.ok) throw new Error("Failed to delte section");
+            await fetchSections();
+            setIsSheetOpen(false);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setIsSaving(false);
+        }
     }
     const handlePreviewSection = async (section: Section) => {
         setSelectedSection(section);
@@ -102,7 +120,7 @@ const Page = () => {
                 id: section.id,
                 name: section.name,
                 description: section.description,
-                sourceCount: section.source_ids?.lenght || 0,
+                sourceCount: section.source_ids?.length || 0,
                 source_ids: section.source_ids || [],
                 tone: section.tone as Tone,
                 scopeLabel: section.allowed_topics || "General",
