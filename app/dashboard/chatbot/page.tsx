@@ -2,6 +2,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import ChatSimulator from "@/components/dashboard/chatbot/chatSimulator"
 import { ScrollArea } from '@/components/ui/scroll-area';
+import AppearanceConfig from '@/components/dashboard/chatbot/appearanceConfig';
+import EmbedCodeConfig from '@/components/dashboard/chatbot/embedCodeConfig';
 
 interface ChatBotMetadata {
     id: string;
@@ -24,7 +26,7 @@ const ChatbotPage = () => {
     const scrollViewportRef = useRef<HTMLDivElement>(null);
 
     const [primaryColor, setPrimaryColor] = useState("#4f46e5");
-    const [welcomeMessage, setWeelcomeMessage] = useState(false);
+    const [welcomeMessage, setWeelcomeMessage] = useState("");
     const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
@@ -40,7 +42,7 @@ const ChatbotPage = () => {
                     setMessages([
                         {
                             role: "assistant",
-                            content: metaData.welcome_message || "Hi! How can i help you",
+                            content: metaData.welcome_message || "Hi, How can i Help you",
                             isWelcome: true,
                             section: null
                         }
@@ -105,6 +107,11 @@ const ChatbotPage = () => {
         ])
     }
 
+
+    const handleSave = async () => {
+
+    }
+    const hasChanges = metadata ? (primaryColor !== (metadata.color || "#4f46e5") || welcomeMessage !== (metadata.welcome_message || "Hi, How can i Help you")) : false
     return (
         <div className='p-6 md:p-8 space-y-8 max-w-400 mx-auto animate-in fade-in duration-500 h-[calc(100vh-64px)] overflow-hidden flex flex-col'>
             <div className='flex flex-col md:flex-row justify-between items-start md:items-center gap-4'>
@@ -136,8 +143,19 @@ const ChatbotPage = () => {
                 </div>
                 <div className='lg:col-span-5 h-full min-h-0 overflow-hidden flex flex-col'>
                     <ScrollArea className='h-full pr-4'>
-                        <div>
-
+                        <div className='space-y-6 pb-8'>
+                            <AppearanceConfig
+                                primaryColor={primaryColor}
+                                setPrimaryColor={setPrimaryColor}
+                                welcomeMessage={welcomeMessage}
+                                setWelcomeMessage={setWeelcomeMessage}
+                                handleSave={handleSave}
+                                isSaving={isSaving}
+                                hasChanges={hasChanges}
+                            />
+                            <EmbedCodeConfig
+                                chatbotId={metadata?.id}
+                            />
                         </div>
                     </ScrollArea>
                 </div>
