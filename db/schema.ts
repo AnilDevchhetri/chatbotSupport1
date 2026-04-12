@@ -55,3 +55,17 @@ export const sections = pgTable("sections", {
   status: text("status").notNull().default("active"),
   created_at: text("created_at").default(sql`now()`),
 });
+
+//chatbot metadata table
+
+export const chatBotMetadata = pgTable("chatBotMetadata", {
+  id: text("id")
+    .primaryKey()
+    .default(sql`gen_random_uuid()`),
+  user_email: text("user_email").notNull(),
+  color: text("color").default("#4f39f6"),
+  welcome_message: text("welcom_message").default(
+    "Hi there how can i help you today",
+  ),
+  created_at: text("created_at").default(sql`now()`),
+});

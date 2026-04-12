@@ -43,6 +43,13 @@
       "when": 1775878702162,
       "tag": "0005_even_titanium_man",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1775965447490,
+      "tag": "0006_robust_stellaris",
+      "breakpoints": true
     }
   ]
 }
