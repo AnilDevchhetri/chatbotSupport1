@@ -1,6 +1,7 @@
 'use client'
 import React, { useEffect, useRef, useState } from 'react'
 import ChatSimulator from "@/components/dashboard/chatbot/chatSimulator"
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface ChatBotMetadata {
     id: string;
@@ -132,6 +133,13 @@ const ChatbotPage = () => {
                         handleReset={handleReset}
                         scrollRef={scrollViewportRef}
                     />
+                </div>
+                <div className='lg:col-span-5 h-full min-h-0 overflow-hidden flex flex-col'>
+                    <ScrollArea className='h-full pr-4'>
+                        <div>
+
+                        </div>
+                    </ScrollArea>
                 </div>
             </div>
 

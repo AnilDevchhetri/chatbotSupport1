@@ -53,9 +53,9 @@ const ChatSimulator = ({
             <ScrollArea className='flex-1 p-6  min-h-0  relative bg-zinc-950/30'>
                 <div className='space-y-6 pb-4  min-h-full flex flex-col justify-end'>
                     {messages.map((msg, i) => (
-                        <div key={i} className={cn('flex w-full flex-col', msg.role === "user" ? 'items-center' : 'items-start')}>
+                        <div key={i} className={cn('flex w-full flex-col', msg.role === "user" ? 'items-ends' : 'items-start')}>
                             <div
-                                className={cn("flex max-w-[80%] gap-3", msg.role === "user" ? "flex-row-reverse" : "flex-row")}
+                                className={cn("flex max-w-full gap-3", msg.role === "user" ? "flex-row-reverse" : "flex-row")}
                             >
                                 <div className={cn("w-8 h-8 rounded-full flex items-center justify-center shrink-0 border border-white/5",
                                     msg.role === 'user' ? "bg-zinc-800" : "text-white"
