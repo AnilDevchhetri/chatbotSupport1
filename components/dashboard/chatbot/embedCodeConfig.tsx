@@ -1,7 +1,8 @@
 
 'use client'
-import { Card, CardHeader, CardTitle } from '@/components/ui/card';
-import { Code } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { AlertCircle, Check, Code, Copy } from 'lucide-react';
 import React, { useState } from 'react'
 
 const EmbedCodeConfig = ({ chatbotId }: { chatbotId: string | undefined }) => {
@@ -21,6 +22,37 @@ const EmbedCodeConfig = ({ chatbotId }: { chatbotId: string | undefined }) => {
                     </CardTitle>
                 </div>
             </CardHeader>
+            <CardContent className='space-y-4'>
+                <div className='relative group'>
+                    <div className='bg-[#050509] border border-white/10 rounded-lg p-3 overflow-hidden'>
+                        <code className='text-[10px] text-zinc-400 font-mono block overflow-hidden'>
+                            {
+                                `<script src="https//tasukeai.com/widges.js" \n data-id=${chatbotId} >\b</scrip> `
+                            }
+                        </code>
+                    </div>
+                    <Button
+                        size={"icon"}
+                        variant={"secondary"}
+                        className='absolute top-2 right-2 h-6 w-6 bg-white/10 hover:bg-wite/20 text-white border-none'
+                        onClick={handleCopyCode}
+                    >
+
+                        {copied ? (
+                            <Check className='w-3 h-3' />
+                        ) : (
+                            <Copy className='w-3 h-3' />
+                        )
+                        }
+                    </Button>
+                </div>
+                <div className='flex items-start gap-2 text-xs text-amber-500/80'>
+                    <AlertCircle className='w-4 h-4 shrink-0 mt-0.5' />
+                    <span>
+                        Paste this code before the closing &lt;/head&gt; tag on your wbeiste.
+                    </span>
+                </div>
+            </CardContent>
         </Card>
     )
 }

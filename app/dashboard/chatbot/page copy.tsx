@@ -26,7 +26,7 @@ const ChatbotPage = () => {
     const scrollViewportRef = useRef<HTMLDivElement>(null);
 
     const [primaryColor, setPrimaryColor] = useState("#4f46e5");
-    const [welcomeMessage, setWelcomeMessage] = useState("");
+    const [welcomeMessage, setWeelcomeMessage] = useState("");
     const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
@@ -37,7 +37,7 @@ const ChatbotPage = () => {
                 setMetadata(metaData)
                 if (metaData) {
                     setPrimaryColor(metaData.color || "#4f46e5")
-                    setWelcomeMessage(metaData.welcome_message || "Hi, How can i Help you");
+                    setWeelcomeMessage(metaData.welcome_message || "Hi, How can i Help you");
 
                     setMessages([
                         {
@@ -109,50 +109,24 @@ const ChatbotPage = () => {
 
 
     const handleSave = async () => {
-        setIsSaving(true);
-        try {
-            const res = await fetch("/api/chatbot/metadata/update", {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    color: primaryColor,
-                    welcome_message: welcomeMessage
-                })
-            });
-
-            if (res.ok) {
-                const updated = await res.json();
-                setMetadata(updated);
-
-            } else {
-                console.log("Failded to save changes");
-            }
-
-        } catch (error) {
-            console.log("faild to update", error);
-        } finally {
-            setIsSaving(false)
-        }
 
     }
     const hasChanges = metadata ? (primaryColor !== (metadata.color || "#4f46e5") || welcomeMessage !== (metadata.welcome_message || "Hi, How can i Help you")) : false
-
-    if (loading) {
-        return (
-            <div className='p-8 text-zinc-500'>Loading chatbot configurations....</div>
-        )
-    } else {
-        return (
-            // Updated Parent Section
-            <div className='p-6 md:p-8 max-w-7xl mx-auto h-screen flex flex-col'> {/* Adjusted max-w and height */}
-                <div className='mb-6'>
-                    <h1 className='text-2xl font-semibold text-white tracking-tight'>Chatbot Playground</h1>
-                    <p className='text-sm text-zinc-400 mt-1'>Configure your chatbot appearance and test it here.</p>
+    return (
+        <div className='p-6 md:p-8 max-w-400 mx-auto animate-in fade-in duration-500 h-[calc(100vh-64px)] flex flex-col gap-6'>
+            <div className='flex flex-col md:flex-row justify-between items-start md:items-center gap-4'>
+                <div>
+                    <h1 className='text-2xl font-semibold text-white tracking-tight'>
+                        Chatbot Playground
+                    </h1>
+                    <p className='text-sm text-zince-400 mt-1'>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus, repellendus. Soluta, perferendis!
+                    </p>
                 </div>
-
-                {/* Main Grid: Set to fill remaining height */}
-                <div className='grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1 min-h-0'>
-                    <div className='lg:col-span-7 flex flex-col min-h-0'>
+            </div>
+            <div className='grid grid-cols-1 lg:grid-cols-12 gap-6 min-h-0 flex-1'>
+                <div className='lg:col-span-7 flex flex-col min-h-0 h-full'>
+                    <div className="flex-1 min-h-0">
                         <ChatSimulator
                             messages={messages}
                             primaryColor={primaryColor}
@@ -168,28 +142,29 @@ const ChatbotPage = () => {
                             scrollRef={scrollViewportRef}
                         />
                     </div>
-                    <div className='lg:col-span-5 flex flex-col min-h-0'>
-                        <ScrollArea className='h-full'>
-                            <div className='space-y-6'>
-                                <AppearanceConfig
-                                    primaryColor={primaryColor}
-                                    setPrimaryColor={setPrimaryColor}
-                                    welcomeMessage={welcomeMessage}
-                                    setWelcomeMessage={setWelcomeMessage}
-                                    handleSave={handleSave}
-                                    isSaving={isSaving}
-                                    hasChanges={hasChanges}
-                                />
-                                <EmbedCodeConfig
-                                    chatbotId={metadata?.id}
-                                />
-                            </div>
-                        </ScrollArea>
-                    </div>
+                </div>
+                <div className='lg:col-span-5 flex flex-col min-h-0'>
+                    <ScrollArea className='flex-1 pr-4'>
+                        <div className='space-y-6 pb-8'>
+                            <AppearanceConfig
+                                primaryColor={primaryColor}
+                                setPrimaryColor={setPrimaryColor}
+                                welcomeMessage={welcomeMessage}
+                                setWelcomeMessage={setWeelcomeMessage}
+                                handleSave={handleSave}
+                                isSaving={isSaving}
+                                hasChanges={hasChanges}
+                            />
+                            <EmbedCodeConfig
+                                chatbotId={metadata?.id}
+                            />
+                        </div>
+                    </ScrollArea>
                 </div>
             </div>
-        )
-    }
+
+        </div>
+    )
 }
 
 export default ChatbotPage
