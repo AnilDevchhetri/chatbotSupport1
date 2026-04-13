@@ -22,7 +22,7 @@ const openai = new OpenAi({
 export async function summarizeMarkdown(markDown: string) {
   try {
     const completion = await openai.chat.completions.create({
-      model: "gpt-4.1-nano",
+      model: "gpt-5-nano",
       temperature: 1.0,
       max_tokens: 700,
       messages: [
@@ -64,6 +64,30 @@ export async function summarizeMarkdown(markDown: string) {
     return completion.choices[0].message.content?.trim() ?? "";
   } catch (error) {
     console.error("Error in summarizeMarkdown", error);
+    throw error;
+  }
+}
+
+export async function summarizeConversation(messages: any[]) {
+  try {
+    const completion = await openai.chat.completions.create({
+      model: "gpt-5-nano",
+      temperature: 0.8,
+      max_tokens: 700,
+      messages: [
+        {
+          role: "system",
+          content: `
+          Summarize the following converstion history into a consice paragraph,  preserving key details and user intent.
+          the final output must be under 1500 words.
+                `,
+        },
+        ...messages,
+      ],
+    });
+    return completion.choices[0].message.content?.trim() ?? "";
+  } catch (error) {
+    console.error("Error in summarizeConversation", error);
     throw error;
   }
 }
