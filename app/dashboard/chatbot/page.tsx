@@ -4,6 +4,7 @@ import ChatSimulator from "@/components/dashboard/chatbot/chatSimulator"
 import { ScrollArea } from '@/components/ui/scroll-area';
 import AppearanceConfig from '@/components/dashboard/chatbot/appearanceConfig';
 import EmbedCodeConfig from '@/components/dashboard/chatbot/embedCodeConfig';
+import { knowledge_source } from '@/db/schema';
 
 interface ChatBotMetadata {
     id: string;
@@ -71,6 +72,31 @@ const ChatbotPage = () => {
     }, [messages, isTyping])
 
     const handleSend = async () => {
+        if (!input.trim()) return;
+
+        const currentSection = sections.find((s) => s.name === activeSection);
+        const sourceIds = currentSection?.source_ids || [];
+        const userMsg = { role: "user", content: input, section: activeSection }
+        setMessages((prev) => [...prev, userMsg]);
+        setInput("");
+        setIsTyping(true);
+
+        const res = await fetch("/api/chat/test", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                messages: [...messages, userMsg],
+                knowledge_source_ids: sourceIds
+            })
+        })
+        if (res.ok) {
+            const data = await res.json();
+            setMessages((prev) => [
+                ...prev, { role: "assistant", content: data.response, section: null }
+            ])
+            setIsTyping(false);
+        }
+
 
     }
     const handleKeyDown = async (e: React.KeyboardEvent) => {

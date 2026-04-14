@@ -13,7 +13,7 @@ const customFetch = (url: RequestInfo | URL, init?: RequestInit) => {
   });
 };
 
-const openai = new OpenAi({
+export const openai = new OpenAi({
   apiKey: process.env.OPENAI_API_KEY,
   fetch: customFetch,
   baseURL: process.env.OPENAI_BASE_URL,
