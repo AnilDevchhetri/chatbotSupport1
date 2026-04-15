@@ -50,6 +50,20 @@
       "when": 1775965447490,
       "tag": "0006_robust_stellaris",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1776257757659,
+      "tag": "0007_last_lady_ursula",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1776257925997,
+      "tag": "0008_dark_green_goblin",
+      "breakpoints": true
     }
   ]
 }
