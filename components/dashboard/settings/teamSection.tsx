@@ -1,10 +1,15 @@
 'use client'
+import { AvatarGroup } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { cn } from '@/lib/utils';
+import { AvatarFallback } from '@base-ui/react';
 import { Plus } from 'lucide-react';
+import { Avatar } from 'radix-ui';
 
 
 import React, { useEffect, useState } from 'react'
@@ -135,6 +140,61 @@ const TeamSection = () => {
                     </DialogContent>
                 </Dialog>
             </CardHeader>
+            <CardContent>
+                <div className='space-y-4'>
+                    {
+                        isLoading ? (
+                            <div className='text-center py-4 text-zinc-500 text-sm'>Loading...</div>
+                        ) : team.length === 0 ? (
+                            <div className='text-center py-4 text-zinc-500 text-sm'>No team member.</div>
+                        ) : (
+                            <div className='grid gap-4'>
+                                {
+                                    team.map((member) => (
+                                        <div key={member.id} className=' flex items-center justify-between p-3  border-white/5 rounded-lg border bg-white/1  hover:bg-white/2 transition-colors'>
+                                            <div className='flex items-center gap-3'>
+                                                <div className="h-9 w-9 rounded-full bg-gray-200 text-gray-700 border border-white/10 flex items-center justify-center text-sm font-semibold">
+                                                    {member.name?.slice(0, 2).toUpperCase() || "UN"}
+                                                </div>
+
+                                                <div>
+                                                    <div className='flex items-center gap-2'>
+                                                        <p className='text-sm font-medium text-white'>
+                                                            {member.name || "Unknown"}
+                                                        </p>
+                                                        <Badge
+                                                            variant={"secondary"}
+                                                            className={
+                                                                cn("capitalize border mx-1 mb-1",
+                                                                    member.status === "active"
+                                                                        ? "bg-emerald-500/10 text-emerald-500 border-white/5"
+                                                                        : "bg-yellow-500/10 text-yellow-500 border-yellow-500/20 hover:bg-yellow-500/20"
+                                                                )
+                                                            }
+                                                        >
+                                                            {member.status}
+                                                        </Badge>
+                                                    </div>
+                                                    <p className='text-xs text-zinc-500'>
+                                                        {member.user_email}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div className='flex items-center gap-2'>
+                                                <Badge variant={"secondary"}
+                                                    className='bg-white/5 capitalize text-zinc-400 hover:bg-white/10 border-white/5 mx-1'
+                                                >
+                                                    {member.role}
+                                                </Badge>
+                                            </div>
+                                        </div>
+                                    ))
+                                }
+                            </div>
+                        )
+                    }
+                </div>
+            </CardContent>
         </Card>
     )
 }

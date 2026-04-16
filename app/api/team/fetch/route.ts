@@ -21,7 +21,7 @@ export async function GET() {
         created_at: teamMembers.created_at,
       })
       .from(teamMembers)
-      .where(eq(teamMembers.organization_id, user.organaization_id));
+      .where(eq(teamMembers.organization_id, user.organization_id));
     return NextResponse.json({ team: teamMembersData });
   } catch (error) {
     return NextResponse.json(

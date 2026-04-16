@@ -26,24 +26,38 @@ export async function POST(req: Request) {
         { status: 400 },
       );
     }
-    const { user } = await scalekit.user.createUserAndMembership(
-      loggedUser.organaization_id,
-      {
-        email,
-        userProfile: {
-          firstName: name || email.split("@")[0],
-          lastName: "",
-        },
-        sendInvitationEmail: true,
-      },
-    );
-    await db.insert(teamMembers).values({
-      user_email: email,
-      name: name || email.split("@")[0],
-      organization_id: loggedUser.organaization_id,
-    });
+    // const { user } = await scalekit.user.createUserAndMembership(
+    //   loggedUser.organaization_id,
+    //   {
+    //     email,
+    //     userProfile: {
+    //       firstName: name || email.split("@")[0],
+    //       lastName: "",
+    //     },
+    //     sendInvitationEmail: true,
+    //   },
+    // );
+    // await db.insert(teamMembers).values({
+    //   user_email: email,
+    //   name: name || email.split("@")[0],
+    //   organization_id: loggedUser.organaization_id,
+    // });
+    // return NextResponse.json({ user });
+
+    const inserted = await db
+      .insert(teamMembers)
+      .values({
+        user_email: email,
+        name: name || email.split("@")[0],
+        organization_id: loggedUser.organization_id,
+      })
+      .returning();
+
+    const user = inserted[0];
+
     return NextResponse.json({ user });
   } catch (error) {
+    console.log("error when add memeber", error);
     return NextResponse.json(
       { error: "Failed to add team member" },
       { status: 500 },
