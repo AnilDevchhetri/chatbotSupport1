@@ -2,7 +2,7 @@
     try {
         var script = document.currentScript;
         if (!script) return;
-        var widgetId = script.getAttribut("data-id");
+        var widgetId = script.getAttribute("data-id");
         if (!widgetId) {
             console.error("[TasukeAi] Missing data-id");
             return;
@@ -15,23 +15,25 @@
             },
             credentials: "omit",
             body: JSON.stringify({
-                widget_it: widgetId,
+                widget_id: widgetId,
             }),
         }).then(function (res) {
             if (!res.ok) throw new Error("Session request failded");
+            return res.json();
         }).then(function (data) {
             if (!data || !data.token) {
                 throw new Error("Invalid Session response.")
             }
 
             var iframe = document.createElement("iframe");
-            iframe.src = "http://localhost:3000/embed?token" + encodeURIComponent(data.token)
+            //  iframe.src = "http://localhost:3000/embed?token" + encodeURIComponent(data.token)
+            iframe.src = "http://localhost:3000/embed?token=" + encodeURIComponent(data.token)
             iframe.setAttribute("title", "Support Chat");
             iframe.style.position = "fixed";
             iframe.style.bottom = "20px";
             iframe.style.right = "20px";
             iframe.style.width = "60px";
-            iframe.style.height = "none";
+            iframe.style.height = "60px";
             iframe.style.zIndex = "999999";
             iframe.style.borderRadius = "30px";
             iframe.style.background = "transparent";

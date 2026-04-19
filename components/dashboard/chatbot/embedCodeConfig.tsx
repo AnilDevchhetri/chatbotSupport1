@@ -9,7 +9,7 @@ const EmbedCodeConfig = ({ chatbotId }: { chatbotId: string | undefined }) => {
     const [copied, setCopied] = useState(false);
     const handleCopyCode = () => {
         setCopied(true);
-        navigator.clipboard.writeText(`<script src="https://tasukeAi.com/widgets.js" data-id="${chatbotId}" defer></script>`)
+        navigator.clipboard.writeText(`<script src="http://localhost:3000/widgets.js" data-id="${chatbotId}" defer></script>`)
         setTimeout(() => setCopied(false), 2000)
     }
     return (
@@ -27,7 +27,7 @@ const EmbedCodeConfig = ({ chatbotId }: { chatbotId: string | undefined }) => {
                     <div className='bg-[#050509] border border-white/10 rounded-lg p-3 overflow-hidden'>
                         <code className='text-[10px] text-zinc-400 font-mono block overflow-hidden'>
                             {
-                                `<script src="https//tasukeai.com/widges.js" \n data-id=${chatbotId} >\b</scrip> `
+                                `<script src="http://localhost:3000/widgets.js" \n data-id=${chatbotId} >\b</scrip> `
                             }
                         </code>
                     </div>
