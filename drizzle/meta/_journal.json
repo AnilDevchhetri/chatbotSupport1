@@ -64,6 +64,13 @@
       "when": 1776257925997,
       "tag": "0008_dark_green_goblin",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1776776002376,
+      "tag": "0009_strong_amphibian",
+      "breakpoints": true
     }
   ]
 }

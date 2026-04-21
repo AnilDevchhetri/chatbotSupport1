@@ -16,7 +16,7 @@ interface ChatBotMetadata {
 interface Section {
     id: string;
     name: string;
-    source_id: string[]
+    source_ids: string[]
 }
 
 const Page = () => {
@@ -114,9 +114,54 @@ const Page = () => {
         if (scrollViewportRef.current) {
             scrollViewportRef.current?.scrollIntoView({ behavior: "smooth" })
         }
-    }, [])
+    }, [messages, isTyping])
 
     const handleSend = async () => {
+        if (!input.trim() || !token) return;
+        const currentSection = sections.find((s) => s.name === activeSection);
+
+        const sourceIds = currentSection?.source_ids || [];
+
+
+        const userMsg = { role: "user", content: input, section: activeSection }
+        setMessages((prev) => [...prev, userMsg]);
+        setInput("");
+        setIsTyping(true);
+
+        try {
+            const res = await fetch("/api/chat/public", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    messages: [...messages, userMsg],
+                    knowledge_source_ids: sourceIds
+                })
+            })
+
+            if (res.ok) {
+                const data = await res.json();
+                setMessages((prev) => [
+                    ...prev,
+                    { role: "assistant", content: data.response, section: null }
+                ]);
+            } else {
+                setMessages((prev) => [
+                    ...prev,
+                    {
+                        role: "assistant",
+                        content: "I'm having trouble connecting right now. Please try again.",
+                        section: null
+                    }
+                ])
+            }
+        } catch (error) {
+            console.log("error on send ", error)
+        } finally {
+            setIsTyping(false);
+        }
 
     }
 

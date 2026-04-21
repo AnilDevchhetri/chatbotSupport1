@@ -48,7 +48,6 @@ export async function POST(req: Request) {
 
   const systemPrompt = `
       
-
       Rules:
       - Name → "use data we give you in context"
       - Role → "get role from the prompt data"
@@ -74,7 +73,7 @@ export async function POST(req: Request) {
       max_tokens: 900,
       messages: [{ role: "system", content: systemPrompt }, ...messages],
     });
-    console.log("completion is ", completion);
+    console.log("ramesh show ", completion);
     const reply =
       completion.choices[0].message.content ||
       "I'm Sorry, I could't generate a response.";
