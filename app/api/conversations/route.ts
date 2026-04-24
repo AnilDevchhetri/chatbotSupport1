@@ -58,7 +58,7 @@ export async function GET() {
         };
       }),
     );
-    return NextResponse.json({ conversation: data });
+    return NextResponse.json({ conversations: data });
   } catch (error) {
     console.error("Dashboard conversation Error: ", error);
     return NextResponse.json(

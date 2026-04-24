@@ -4,7 +4,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { conversation } from '@/db/schema';
 import { cn } from '@/lib/utils';
 import { Loader2, Search } from 'lucide-react';
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 interface Conversation {
     id: string;
@@ -34,6 +34,39 @@ const ConversationsPage = () => {
     const [isSending, setIsSending] = useState(false);
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const fetchConversations = async () => {
+            try {
+                const res = await fetch("/api/conversations");
+                const data = await res.json();
+                setConversations(data.conversations || []);
+
+            } catch (error) {
+                console.error("Failed to fetch Covnersations", error);
+            } finally {
+                setIsLoadingList(false);
+            }
+        }
+        fetchConversations();
+    }, [])
+
+    useEffect(() => {
+        if (!selectedId) return;
+        const fetchMessages = async () => {
+            setIsLoadingMessages(true);
+            try {
+                const res = await fetch(`/api/conversations/${selectedId}/messages`);
+                const data = await res.json();
+                setCurrentMessages(data.messages || []);
+            } catch (error) {
+                console.error("Failed to fetch messages", error);
+            } finally {
+                setIsLoadingMessages(false);
+            }
+        }
+        fetchMessages();
+    }, [selectedId])
 
     const filteredConversations = conversations.filter((c) =>
         c.user?.toLowerCase().includes(searchQuery.toLowerCase()) ||
