@@ -3,7 +3,7 @@ import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { conversation } from '@/db/schema';
 import { cn } from '@/lib/utils';
-import { Loader2, Search } from 'lucide-react';
+import { Loader2, Search, User } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react'
 
 interface Conversation {
@@ -68,10 +68,27 @@ const ConversationsPage = () => {
         fetchMessages();
     }, [selectedId])
 
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [currentMessages, isLoadingMessages])
+
+    const handleReplySend = async () => { }
+
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            handleReplySend();
+        }
+    }
+
+
     const filteredConversations = conversations.filter((c) =>
         c.user?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         c.lastMessage?.toLowerCase().includes(searchQuery.toLowerCase())
     )
+
+    const selectedConv = conversations?.find((c) => c.id === selectedId);
+
 
     return (
         <div className='flex h-[calc(100vh-64px)] overflow-hidden bg-black animate-in fade-in duration-500'>
@@ -154,7 +171,25 @@ const ConversationsPage = () => {
 
             </div >
             <div className='flex-1 flex flex-col mn-w-0 bg-[#0a0a0e]'>
+                {
+                    selectedConv ? (
+                        <>
+                            <div className='h-16 border-b border-white/5 flex items-center justify-center'>
+                                <div className='flex items-center gap-3'>
+                                    <div className='w-8 h-8 rounded-full bg-zinc-800 flex items-center'>
+                                        <User className='w-4 h-4 text-zinc-400' />
+                                    </div>
+                                </div>
 
+                            </div>
+                        </>
+                    )
+
+
+
+
+                        : (<></>)
+                }
             </div>
         </div >
     )
