@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { conversation } from '@/db/schema';
 import { cn } from '@/lib/utils';
-import { Loader2, MoreHorizontal, Search, Send, User } from 'lucide-react';
+import { Loader2, MessageSquare, MoreHorizontal, Search, Send, User } from 'lucide-react';
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react'
 
@@ -74,7 +74,43 @@ const ConversationsPage = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [currentMessages, isLoadingMessages])
 
-    const handleReplySend = async () => { }
+    const handleReplySend = async () => {
+        if (!replyContent.trim() || !selectedId) return;
+        setIsSending(true);
+        try {
+            const res = await fetch(`/api/conversations/${selectedId}/reply`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ content: replyContent })
+            });
+            if (res.ok) {
+                const newMsg: Message = {
+                    id: crypto.randomUUID(),
+                    role: "assistant",
+                    content: replyContent,
+                    created_at: new Date().toISOString()
+                }
+                setCurrentMessages((prev) => [...prev, newMsg]);
+                setReplyContent("");
+            }
+
+            setConversations((prev) =>
+                prev.map((c) =>
+                    c.id === selectedId
+                        ? { ...c, lastMessage: replyContent, time: "Just now" }
+                        : c
+                )
+            )
+
+        } catch (error) {
+            console.error("Failed to send reply", error);
+
+        } finally {
+            setIsSending(false);
+        }
+    }
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === "Enter" && !e.shiftKey) {
@@ -179,7 +215,7 @@ const ConversationsPage = () => {
             {/* RIGHT SIDE */}
             <div className="flex-1 min-w-0 flex flex-col bg-[#0a0a0e] overflow-hidden">
 
-                {selectedConv && (
+                {selectedConv ? (
                     <>
                         {/* Header */}
                         <div className="h-16 shrink-0 border-b border-white/5 flex items-center justify-between px-6 bg-[#0e0e12]">
@@ -322,7 +358,13 @@ const ConversationsPage = () => {
                             </div>
                         </div>
                     </>
-                )}
+                ) : (
+                    <div className='flex-1 flex flex-col items-center justify-center text-zinc-500 gap-2'>
+                        <MessageSquare className='w-8 h-8 text-zinc-700' />
+                        <p>Select a conversation to view details.</p>
+                    </div>
+                )
+                }
 
             </div>
         </div>
