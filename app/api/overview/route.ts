@@ -31,14 +31,14 @@ export async function GET() {
       .groupBy(knowledge_source.type);
 
     const knowledgeStats = {
-      webiste: 0,
+      website: 0,
       upload: 0,
       text: 0,
       total: 0,
     };
 
     ks.forEach((k) => {
-      if (k.type === "website") knowledgeStats.webiste += k.count;
+      if (k.type === "website") knowledgeStats.website += k.count;
       else if (k.type === "text") knowledgeStats.text += k.count;
       else knowledgeStats.upload += k.count;
       knowledgeStats.total += k.count;
@@ -114,7 +114,7 @@ export async function GET() {
     }
     return NextResponse.json({
       botIds: botIds[0] || null,
-      knwoledge: knowledgeStats,
+      knowledge: knowledgeStats,
       sections: sectionStats,
       chats: recentChats,
       counts: {
