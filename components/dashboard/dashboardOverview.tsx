@@ -1,5 +1,5 @@
 'use client'
-import { ArrowUpRight, Check, FileText, Globe, Loader2, MoreHorizontal, Text, Upload } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Check, Copy, FileText, Globe, Loader2, MoreHorizontal, Text, Upload } from 'lucide-react';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
@@ -224,7 +224,84 @@ const DashboardOverview = () => {
                     </Card>
                 </div>
                 <div className='space-y-8'>
+                    <Card
+                        className='border-white/5 bg-[#0A0A0E] min-h-80'
+                    >
+                        <CardHeader className='pb-4'>
+                            <div className='flex items-center justify-between'>
+                                <CardTitle className='text-base font-medium text-white'>
+                                    Recent Chats
+                                </CardTitle>
+                                <Link href={"/dashboard/covnersations"}>
+                                    View All <ArrowRight className='w-3 h-3' />
+                                </Link>
+                            </div>
+                        </CardHeader>
+                        <CardContent className='px-2 pb-2'>
+                            <div className='space-y-1'>
+                                {
+                                    chats.length === 0 ? (
+                                        <div className='p-4 text-center text-xs text-zinc-500'>
+                                            No Chats yet.
+                                        </div>
+                                    ) : (
+                                        chats.map((chat: any, i: number) => (
+                                            <Link key={i} href={"/dashboard/conversations"}
+                                                className='block p-3 rounded-lg hover:bg-white/3 transition-colors group'
+                                            >
+                                                <div className='flex justify-between items-start mb-1'>
+                                                    <span className='text-sm font-medium text-zinc-200 group-hover:text-white transition-colors'>
+                                                        {chat.title}
+                                                    </span>
+                                                    <span className='text-[10px] text-zinc-600 whitespace-nowrap ml-2'>
+                                                        {chat.time}
+                                                    </span>
+                                                </div>
+                                                <p className='text-xs text-zinc-500 line-clamp-1'>
+                                                    {chat.snippet}
+                                                </p>
+                                            </Link>
+                                        ))
+                                    )
+                                }
+                            </div>
+                        </CardContent>
+                    </Card>
+                    <Card className='border-white/5 bg-[#0A0A0E]' id='widget'>
+                        <CardHeader className='text-base font-medium text-white'>
+                            Install Widget
+                        </CardHeader>
+                        <CardDescription>
+                            Add this snippet to our webiste appropriate page.
+                        </CardDescription>
+                        <CardContent>
+                            <div className='relative group'>
+                                <div className='relative group'>
+                                    <div className='bg-[#050509] border border-white/10 rounded-lg p-3 overflow-hidden'>
+                                        <code className='text-[10px] text-zinc-400 font-mono block overflow-hidden'>
+                                            {
+                                                `<script src="http://localhost:3000/widgets.js" \n data-id=${data?.botId} >\b</scrip> `
+                                            }
+                                        </code>
+                                    </div>
+                                    <Button
+                                        size={"icon"}
+                                        variant={"secondary"}
+                                        className='absolute top-2 right-2 h-6 w-6 bg-white/10 hover:bg-wite/20 text-white border-none'
+                                    // onClick={handleCopyCode}
+                                    >
 
+                                        {copied ? (
+                                            <Check className='w-3 h-3' />
+                                        ) : (
+                                            <Copy className='w-3 h-3' />
+                                        )
+                                        }
+                                    </Button>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
                 </div>
             </div>
         </div>
